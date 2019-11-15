@@ -1,9 +1,17 @@
-import { takeLatest, put } from "redux-saga/effects";
+import { takeLatest, put, call } from "redux-saga/effects";
 import { delay } from "redux-saga";
 
+function apiget(text) {
+  return new Promise((resolver, reject) => {
+    setTimeout(() => {
+      resolver(text + "da RocketSeat");
+    }, 2000);
+  });
+}
+
 function* asyncAddTodo(action) {
-  yield delay(2000);
-  yield put({ type: "ADD_TODO", payload: { text: action.payload.text } });
+  const response = yield call(apiget, action.payload.text);
+  yield put({ type: "ADD_TODO", payload: { text: response } });
 }
 
 export default function* root() {
